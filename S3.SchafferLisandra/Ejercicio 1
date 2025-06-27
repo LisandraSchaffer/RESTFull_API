@@ -1,0 +1,15 @@
+//Ejercicio 1: Solución a un problema 
+//Crear el primer archivo llamado “ejercicio_1.js” que contenga la solución a lo siguiente: 
+//Necesitamos una función que reciba un array de números y retorne un nuevo array que contenga solo los números mayores a 10. Te presento una posible solución que debes analizar y responder si es correcta, de lo contrario debes repararla. 
+
+function filtrarMayoresA10(numeros) { 
+let mayores = []
+for (let i = 0; i < numeros.length; i++) { 
+if (numeros[i] > 10) { 
+mayores.push (numeros[i]);
+} 
+} 
+return mayores;
+} 
+let resultado = filtrarMayoresA10([3, 9, 4, 17, 8, 20, 11, 7]); 
+console.log(resultado);

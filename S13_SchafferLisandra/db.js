@@ -4,8 +4,8 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'nodeuser',
   password: 'nodepass123',
-  database: 'CLINICA',   // Asegurate que esté en minúsculas como la usás en Node
-  port: 3306             // Por defecto
+  database: 'CLINICA',   
+  port: 3306             
 });
 
 connection.connect((err) => {

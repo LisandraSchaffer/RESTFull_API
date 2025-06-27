@@ -1,0 +1,28 @@
+//Ejercicio 2: Solución a un problema 
+//Queremos una función que reciba un texto (string) y lo devuelva en mayúsculas, pero sin espacios al principio ni al final. Te presento dos soluciones, debes analizar ambas y responder: 
+//• ¿Cuál es la correcta? 
+//• ¿Qué errores tiene la incorrecta, por qué falla? 
+//• ¿Cómo se podría corregir? 
+
+// Solución 1 ----------------------------- 
+function formatearTexto(texto) { 
+return texto.trim().toUpperCase(); 
+
+
+} 
+let resultado = formatearTexto("Sé el cambio que quieres ver en el mundo");
+console.log(resultado);
+//La sulución 1 es la correcta
+
+
+//La solución 2 está mal porque no guarda los cambios realizados, para corregirla se deben guardar los valores devueltos por las funciones en ¨¨texto¨.
+// Quedando de la siguiente manera:
+
+function formatearTexto(texto) {
+   let sinEspacios = texto.trim();
+   let enMayusculas = sinEspacios.toUpperCase();
+   return enMayusculas;
+ }
+ 
+ let result = formatearTexto("   sé el cambio que quieres ver en el mundo   ");
+ console.log(resultado); 

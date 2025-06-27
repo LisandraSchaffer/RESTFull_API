@@ -1,0 +1,13 @@
+//Ejercicio 3: Invertir una Cadena 
+// Escribe una función que reciba una cadena de texto y devuelva la cadena invertida. Por ejemplo, si la entrada es "JavaScript", la salida debe ser "tpircSavaJ". 
+
+function invertirCadena(cadena) {
+  return cadena.split('').reverse().join('');
+}
+
+let textoOriginal = "HelloPeople";
+let textoInvertido = invertirCadena(textoOriginal);
+
+console.log("Texto original:", textoOriginal);
+console.log("Texto invertido:", textoInvertido);
+

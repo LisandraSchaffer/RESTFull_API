@@ -1,0 +1,28 @@
+//Ejercicio 1:
+//Desarrollar una función utilizando DATE y sus métodos para que realice el siguiente calculo:
+//Al ingresar un valor numérico entero, calcular una nueva fecha en un determinado formato hacia el futuro o hacia el pasado (dependiendo si el número es positivo o negativo) acorde a la diferencia de esa cantidad de días respeto a la fecha actual. Por ejemplo, si hoy es miércoles 09/04/2025 y el usuario ingresa un 10, la función debe devolver como resultado: “sábado 19 de abril de 2025”
+
+
+function calcularFecha(diasDiferencia) {
+  const fechaActual = new Date();
+
+  const nuevaFecha = new Date(fechaActual);
+  nuevaFecha.setDate(fechaActual.getDate() + diasDiferencia);
+
+  const diasSemana = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
+  const meses = [
+    "enero", "febrero", "marzo", "abril", "mayo", "junio",
+    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+  ];
+
+  const diaSemana = diasSemana[nuevaFecha.getDay()];
+  const dia = nuevaFecha.getDate();
+  const mes = meses[nuevaFecha.getMonth()];
+  const ano = nuevaFecha.getFullYear();
+
+  return `${diaSemana} ${dia} de ${mes} de ${ano}`;
+}
+
+console.log(calcularFecha(10));  // Fecha futuro
+console.log(calcularFecha(0));   // Fecha actual hoy
+console.log(calcularFecha(-10));  // Fecha pasado

@@ -1,0 +1,30 @@
+//Ejercicio 6:  Funciones con de arrays 
+//Deberán investigar respecto la función nativa de JavaScript llamada “typeof” para solucionar las consignas del ejercicio. A partir del siguiente array: 
+//let valores = [true, false, 2, "character", "charmander", 3, "char"]; 
+//a) Determinar cuál de los “elementos de texto” es mayor, es decir el que contenga más letras. 
+//b) Determinar el resultado de las cuatro operaciones matemáticas básicas (suma, resta, multiplicación y división) realizadas con los dos elementos numéricos.
+
+let valores = [true, false, 2, "character", "charmander", 3, "char"];
+
+// A)
+let strings = valores.filter(item => typeof item === "string");
+
+let stringMasLargo = strings.reduce((mayor, actual) => {
+  return actual.length > mayor.length ? actual : mayor;
+});
+
+console.log("El texto con más letras es:", stringMasLargo);
+
+// B)
+let numeros = valores.filter(item => typeof item === "number");
+
+if (numeros.length >= 2) {
+  let [num1, num2] = numeros;
+
+  console.log("Suma:", num1 + num2);
+  console.log("Resta:", num1 - num2);
+  console.log("Multiplicación:", num1 * num2);
+  console.log("División:", num1 / num2);
+} else {
+  console.log("No hay suficientes números para operar.");
+}
