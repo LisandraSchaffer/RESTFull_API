@@ -4,7 +4,7 @@ const PORT = 8080;
 
 app.use(express.json());
 
-// === USUARIOS ===
+//USUARIOS
 let usuarios = [];
 let nextUsuarioId = 1;
 
@@ -39,7 +39,7 @@ app.delete('/usuarios/:id', (req, res) => {
   res.status(204).send();
 });
 
-// === LIBROS ===
+//LIBROS
 let libros = [];
 let nextLibroId = 1;
 
@@ -93,3 +93,136 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log('Servidor escuchando en http://localhost:' + PORT);
 });
+
+//PRÉSTAMOS
+let prestamos = [];
+let nextPrestamoId = 1;
+
+app.get('/prestamos', (req, res) => {
+  res.json(prestamos);
+});
+
+app.get('/prestamos/:id', (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const prestamo = prestamos.find(p => p.id === id);
+  if (!prestamo) return res.status(404).json({ error: 'Préstamo no encontrado' });
+  res.json(prestamo);
+});
+
+app.post('/prestamos', (req, res) => {
+  const { id_usuario, id_libro, fecha_prestamo, fecha_devolucion } = req.body;
+  if (!id_usuario || !id_libro || !fecha_prestamo) {
+    return res.status(400).json({ error: 'Faltan datos obligatorios (usuario, libro o fecha_prestamo)' });
+  }
+  const nuevo = {
+    id: nextPrestamoId++,
+    id_usuario,
+    id_libro,
+    fecha_prestamo,
+    fecha_devolucion: fecha_devolucion || null
+  };
+  prestamos.push(nuevo);
+  res.status(201).json(nuevo);
+});
+
+app.put('/prestamos/:id', (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const prestamo = prestamos.find(p => p.id === id);
+  if (!prestamo) return res.status(404).json({ error: 'Préstamo no encontrado' });
+
+  const { id_usuario, id_libro, fecha_prestamo, fecha_devolucion } = req.body;
+  if (id_usuario !== undefined) prestamo.id_usuario = id_usuario;
+  if (id_libro !== undefined) prestamo.id_libro = id_libro;
+  if (fecha_prestamo !== undefined) prestamo.fecha_prestamo = fecha_prestamo;
+  if (fecha_devolucion !== undefined) prestamo.fecha_devolucion = fecha_devolucion;
+
+  res.json(prestamo);
+});
+
+app.delete('/prestamos/:id', (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const idx = prestamos.findIndex(p => p.id === id);
+  if (idx === -1) return res.status(404).json({ error: 'Préstamo no encontrado' });
+  prestamos.splice(idx, 1);
+  res.status(204).send();
+});
+
+//RESEÑAS
+let resenias = [];
+let nextReseniaId = 1;
+
+app.get('/resenias', (req, res) => {
+  res.json(resenias);
+});
+
+app.get('/resenias/:id', (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const resenia = resenias.find(r => r.id === id);
+  if (!resenia) return res.status(404).json({ error: 'Reseña no encontrada' });
+  res.json(resenia);
+});
+
+app.get('/resenias/libro/:id_libro', (req, res) => {
+  const id_libro = parseInt(req.params.id_libro, 10);
+  const reseniasLibro = resenias.filter(r => r.id_libro === id_libro);
+  res.json(reseniasLibro);
+});
+
+app.post('/resenias', (req, res) => {
+  const { id_libro, id_usuario, contenido, puntuacion } = req.body;
+  if (!id_libro || !id_usuario || !contenido) {
+    return res.status(400).json({ error: 'Faltan datos obligatorios (libro, usuario o contenido)' });
+  }
+  const nueva = {
+    id: nextReseniaId++,
+    id_libro,
+    id_usuario,
+    contenido,
+    puntuacion: puntuacion || null
+  };
+  res.status(201).json(nueva);
+  resenias.push(nueva);
+});
+
+app.put('/resenias/:id', (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const resenia = resenias.find(r => r.id === id);
+  if (!resenia) return res.status(404).json({ error: 'Reseña no encontrada' });
+
+  const { contenido, puntuacion } = req.body;
+  if (contenido !== undefined) resenia.contenido = contenido;
+  if (puntuacion !== undefined) resenia.puntuacion = puntuacion;
+
+  res.json(resenia);
+});
+
+app.delete('/resenias/:id', (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const idx = resenias.findIndex(r => r.id === id);
+  if (idx === -1) return res.status(404).json({ error: 'Reseña no encontrada' });
+  resenias.splice(idx, 1);
+  res.status(204).send();
+});
+
+//LÓGICAS
+
+// Libros disponibles (existencia > 0)
+app.get('/libros/disponibles', (req, res) => {
+  const disponibles = libros.filter(libro => libro.existencia > 0);
+  res.json(disponibles);
+});
+
+// Préstamos por usuario
+app.get('/prestamos/usuario/:id_usuario', (req, res) => {
+  const id_usuario = parseInt(req.params.id_usuario, 10);
+  const prestamosUsuario = prestamos.filter(p => p.id_usuario === id_usuario);
+  res.json(prestamosUsuario);
+});
+
+// Préstamos por libro
+app.get('/prestamos/libro/:id_libro', (req, res) => {
+  const id_libro = parseInt(req.params.id_libro, 10);
+  const prestamosLibro = prestamos.filter(p => p.id_libro === id_libro);
+  res.json(prestamosLibro);
+});
+
